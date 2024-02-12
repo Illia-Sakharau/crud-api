@@ -11,7 +11,7 @@ class usersController {
   }
 
   async getUserById(req: reqProp, res: resProp) {
-    const userId = req.url?.split('/')[2] as string
+    const userId = req.url?.split('/')[3] as string
 
     if (!validate(userId)) {
       res.writeHead(400, { 'Content-Type': 'application/json' })
@@ -58,7 +58,7 @@ class usersController {
   }
 
   async updateUser(req: reqProp, res: resProp) {
-    const userId = req.url?.split('/')[2] as string
+    const userId = req.url?.split('/')[3] as string
 
     if (!validate(userId)) {
       res.writeHead(400, { 'Content-Type': 'application/json' })
@@ -99,7 +99,7 @@ class usersController {
   }
 
   async deleteUser(req: reqProp, res: resProp) {
-    const userId = req.url?.split('/')[2] as string
+    const userId = req.url?.split('/')[3] as string
 
     if (!validate(userId)) {
       res.writeHead(400, { 'Content-Type': 'application/json' })

@@ -7,10 +7,11 @@ const PORT = process.env.PORT || 8080
 
 const server = http.createServer((req, res) => {
   try {
-    const { url } = req
+    const { url } = req;
+    const urlArr = url?.split('/') as string[];
 
-    switch (url?.split('/')[1]) {
-      case 'users': {
+    switch (`${urlArr[1]}/${urlArr[2]}`) {
+      case 'api/users': {
         usersRouter(req, res)
         break
       }

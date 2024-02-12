@@ -4,7 +4,7 @@ import { return404 } from './utils/404responce'
 
 const usersRouter = (req: reqProp, res: resProp) => {
   const { url, method } = req
-  const isRoot = !url?.split('/')[2]
+  const isRoot = !url?.split('/')[3]
   const urlLength = url?.split('/').length
 
   switch (method) {
@@ -12,7 +12,7 @@ const usersRouter = (req: reqProp, res: resProp) => {
       if (isRoot) {
         usersController.getAllUsers(req, res)
         break
-      } else if (urlLength === 3) {
+      } else if (urlLength === 4) {
         usersController.getUserById(req, res)
         break
       }
@@ -28,7 +28,7 @@ const usersRouter = (req: reqProp, res: resProp) => {
       break
     }
     case 'PUT': {
-      if (urlLength === 3) {
+      if (urlLength === 4) {
         usersController.updateUser(req, res)
         break
       }
@@ -36,7 +36,7 @@ const usersRouter = (req: reqProp, res: resProp) => {
       break
     }
     case 'DELETE': {
-      if (urlLength === 3) {
+      if (urlLength === 4) {
         usersController.deleteUser(req, res)
         break
       }
