@@ -56,6 +56,47 @@ class usersController {
       }
     })
   }
+
+  async updateUser(req: reqProp, res: resProp) {
+    const userId = req.url?.split('/')[2] as string
+
+    if (!validate(userId)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'Invalid user ID format' }))
+      return
+    }
+
+    const userIndex = users.findIndex(({ id }) => id === userId)
+    if (userIndex !== -1) {
+      let body = ''
+      req.on('data', (chunk) => {
+        body += chunk.toString()
+      })
+      req.on('end', () => {
+        const newUserData = JSON.parse(body)
+        if (isCorrectNewUserData(newUserData)) {
+          const updatedUser = {
+            id: users[userIndex].id,
+            ...newUserData,
+          }
+          users[userIndex] = updatedUser
+          res.writeHead(201, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify(updatedUser))
+        } else {
+          res.writeHead(400, { 'Content-Type': 'application/json' })
+          res.end(
+            JSON.stringify({
+              error:
+                'Incorrect user information. Username, age and hobbies are required fields',
+            }),
+          )
+        }
+      })
+    } else {
+      res.writeHead(404, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'The user with this ID does not exist' }))
+    }
+  }
 }
 
 export default new usersController()
