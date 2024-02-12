@@ -35,6 +35,14 @@ const usersRouter = (req: reqProp, res: resProp) => {
       return404(res)
       break
     }
+    case 'DELETE': {
+      if (urlLength === 3) {
+        usersController.deleteUser(req, res)
+        break
+      }
+      return404(res)
+      break
+    }
     default: {
       return404(res)
       break

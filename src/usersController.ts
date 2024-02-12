@@ -80,7 +80,7 @@ class usersController {
             ...newUserData,
           }
           users[userIndex] = updatedUser
-          res.writeHead(201, { 'Content-Type': 'application/json' })
+          res.writeHead(200, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify(updatedUser))
         } else {
           res.writeHead(400, { 'Content-Type': 'application/json' })
@@ -92,6 +92,26 @@ class usersController {
           )
         }
       })
+    } else {
+      res.writeHead(404, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'The user with this ID does not exist' }))
+    }
+  }
+
+  async deleteUser(req: reqProp, res: resProp) {
+    const userId = req.url?.split('/')[2] as string
+
+    if (!validate(userId)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'Invalid user ID format' }))
+      return
+    }
+
+    const userIndex = users.findIndex(({ id }) => id === userId)
+    if (userIndex !== -1) {
+      users.splice(userIndex, 1)
+      res.writeHead(204, { 'Content-Type': 'application/json' })
+      res.end()
     } else {
       res.writeHead(404, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify({ error: 'The user with this ID does not exist' }))
