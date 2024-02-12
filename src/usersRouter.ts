@@ -10,11 +10,12 @@ const usersRouter = (req: reqProp, res: resProp) => {
         usersController.getAllUsers(req, res)
         break
       }
+      throw new Error('')
     }
     // eslint-disable-next-line no-fallthrough
     default: {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Endpoint not found' }));
+      res.writeHead(404, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'Endpoint not found' }))
       break
     }
   }
