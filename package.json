@@ -1,0 +1,41 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start:dev": "nodemon -I --exec node --no-warnings --experimental-specifier-resolution=node  --loader ts-node/esm ./src/index.ts",
+    "start:prod": "webpack && node ./dist/main.cjs",
+    "lint": "eslint . --ext .ts",
+    "prettier": "prettier --write \"src/**/*.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Illia-Sakharau/crud-api.git"
+  },
+  "author": "Illia Sakharau",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Illia-Sakharau/crud-api/issues"
+  },
+  "homepage": "https://github.com/Illia-Sakharau/crud-api#readme",
+  "dependencies": {
+    "dotenv": "^16.4.2",
+    "ts-loader": "^9.5.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.56.0",
+    "nodemon": "^3.0.3",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
