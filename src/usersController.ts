@@ -11,12 +11,12 @@ class usersController {
   }
 
   async getUserById(req: reqProp, res: resProp) {
-    const userId = req.url?.split('/')[2] as string;
+    const userId = req.url?.split('/')[2] as string
 
     if (!validate(userId)) {
-      res.writeHead(400, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Invalid user ID format' }));
-      return;
+      res.writeHead(400, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'Invalid user ID format' }))
+      return
     }
 
     const user = users.find(({ id }) => id === userId)
@@ -25,9 +25,7 @@ class usersController {
       res.end(JSON.stringify(user))
     } else {
       res.writeHead(404, { 'Content-Type': 'application/json' })
-      res.end(
-        JSON.stringify({ error: 'The user with this ID does not exist' }),
-      )
+      res.end(JSON.stringify({ error: 'The user with this ID does not exist' }))
     }
   }
 
@@ -58,7 +56,6 @@ class usersController {
       }
     })
   }
-
 }
 
 export default new usersController()

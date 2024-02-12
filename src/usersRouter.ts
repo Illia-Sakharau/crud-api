@@ -4,7 +4,7 @@ import { return404 } from './utils/404responce'
 
 const usersRouter = (req: reqProp, res: resProp) => {
   const { url, method } = req
-  const isRoot = !url?.split('/')[2];
+  const isRoot = !url?.split('/')[2]
 
   switch (method) {
     case 'GET': {
