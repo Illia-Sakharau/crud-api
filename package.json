@@ -1,11 +1,11 @@
 {
-  "name": "my-webpack-project",
+  "name": "crud-api",
   "version": "1.0.0",
-  "description": "My webpack project",
+  "description": "",
   "type": "module",
   "scripts": {
     "start:dev": "nodemon",
-    "start:prod": "webpack --mode=production --node-env=production && node ./dist/main.js",
+    "start:prod": "webpack --mode=production --node-env=production && node ./dist/main.cjs",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write \"src/**/*.ts\""
   },

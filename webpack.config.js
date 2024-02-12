@@ -1,14 +1,13 @@
 import path, {dirname} from 'path';
 import { fileURLToPath } from "url";
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const isProduction = process.env.NODE_ENV == 'production';
 
 
 const config = {
+    target: 'node',
     entry: './src/index.ts',
     output: {
+        filename: 'main.cjs',
         path: path.resolve(__dirname, 'dist'),
     },
     module: {
@@ -25,13 +24,4 @@ const config = {
     },
 };
 
-export default () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
+export default config
