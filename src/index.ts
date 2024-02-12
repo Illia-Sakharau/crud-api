@@ -13,12 +13,8 @@ const server = http.createServer((req, res) => {
       break
     }
     default: {
-      res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(
-        JSON.stringify({
-          data: { url },
-        }),
-      )
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Endpoint not found' }));
       break
     }
   }
