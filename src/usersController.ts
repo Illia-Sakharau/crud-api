@@ -1,18 +1,8 @@
-import { reqProp, resProp, User, ReqNewUserData } from './types'
+import { reqProp, resProp, User } from './types'
 import { v4 as uuidv4 } from 'uuid'
+import { isCorrectNewUserData } from './utils/checkNewUserData'
 
 const users: User[] = []
-
-const isCorrectNewUserData = (
-  value: ReqNewUserData,
-): value is ReqNewUserData => {
-  return (
-    typeof value.username === 'string' &&
-    typeof value.age === 'number' &&
-    Array.isArray(value.hobbies) &&
-    value.hobbies.every((hobby) => typeof hobby === 'string')
-  )
-}
 
 class usersController {
   async getAllUsers(_req: reqProp, res: resProp) {
