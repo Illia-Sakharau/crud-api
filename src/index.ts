@@ -1,6 +1,7 @@
 import http from 'http'
 import usersRouter from './usersRouter'
 import 'dotenv/config'
+import { return404 } from './utils/404responce'
 
 const PORT = process.env.PORT || 8080
 
@@ -20,8 +21,7 @@ const server = http.createServer((req, res) => {
       }
     }
   } catch (_) {
-    res.writeHead(500, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify({ error: 'Internal Server Error' }))
+    return404(res)
   }
 })
 

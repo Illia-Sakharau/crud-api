@@ -1,25 +1,33 @@
 import { reqProp, resProp } from './types'
 import usersController from './usersController'
+import { return404 } from './utils/404responce'
 
 const usersRouter = (req: reqProp, res: resProp) => {
   const { url, method } = req
+  const isRoot = !url?.split('/')[2];
 
   switch (method) {
     case 'GET': {
-      if (!url?.split('/')[2]) {
+      if (isRoot) {
         usersController.getAllUsers(req, res)
         break
+      } else if (url?.split('/').length === 3) {
+        usersController.getUserById(req, res)
+        break
       }
-      throw new Error('')
-    }
-    case 'POST': {
-      usersController.createUser(req, res)
+      return404(res)
       break
     }
-    // eslint-disable-next-line no-fallthrough
+    case 'POST': {
+      if (isRoot) {
+        usersController.createUser(req, res)
+        break
+      }
+      return404(res)
+      break
+    }
     default: {
-      res.writeHead(404, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: 'Endpoint not found' }))
+      return404(res)
       break
     }
   }
