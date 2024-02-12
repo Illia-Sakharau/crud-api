@@ -13,6 +13,7 @@ git clone https://github.com/Illia-Sakharau/crud-api.git
 - Install dependencies
 ```
 cd crud-api
+git checkout develop
 npm install
 ```
 
