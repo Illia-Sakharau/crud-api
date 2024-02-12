@@ -12,6 +12,10 @@ const usersRouter = (req: reqProp, res: resProp) => {
       }
       throw new Error('')
     }
+    case 'POST': {
+      usersController.createUser(req, res)
+      break
+    }
     // eslint-disable-next-line no-fallthrough
     default: {
       res.writeHead(404, { 'Content-Type': 'application/json' })
