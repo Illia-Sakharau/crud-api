@@ -1,6 +1,6 @@
 import { reqProp, resProp } from './types'
 import usersController from './usersController'
-import { return404 } from './utils/404responce'
+import { return404 } from './utils/responceErrors'
 
 const usersRouter = (req: reqProp, res: resProp) => {
   const { url, method } = req

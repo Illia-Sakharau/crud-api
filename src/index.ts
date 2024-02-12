@@ -1,14 +1,14 @@
 import http from 'http'
 import usersRouter from './usersRouter'
 import 'dotenv/config'
-import { return404 } from './utils/404responce'
+import { return404, return500 } from './utils/responceErrors'
 
 const PORT = process.env.PORT || 8080
 
 const server = http.createServer((req, res) => {
   try {
-    const { url } = req;
-    const urlArr = url?.split('/') as string[];
+    const { url } = req
+    const urlArr = url?.split('/') as string[]
 
     switch (`${urlArr[1]}/${urlArr[2]}`) {
       case 'api/users': {
@@ -16,13 +16,12 @@ const server = http.createServer((req, res) => {
         break
       }
       default: {
-        res.writeHead(404, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify({ error: 'Endpoint not found' }))
+        return404(res)
         break
       }
     }
   } catch (_) {
-    return404(res)
+    return500(res)
   }
 })
 

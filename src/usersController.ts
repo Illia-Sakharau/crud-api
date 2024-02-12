@@ -1,120 +1,155 @@
 import { reqProp, resProp, User } from './types'
 import { v4 as uuidv4, validate } from 'uuid'
 import { isCorrectNewUserData } from './utils/checkNewUserData'
+import { return500 } from './utils/responceErrors'
 
 const users: User[] = []
 
 class usersController {
   async getAllUsers(_req: reqProp, res: resProp) {
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(users))
+    try {
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(users))
+    } catch (_) {
+      return500(res)
+    }
   }
 
   async getUserById(req: reqProp, res: resProp) {
-    const userId = req.url?.split('/')[3] as string
+    try {
+      const userId = req.url?.split('/')[3] as string
 
-    if (!validate(userId)) {
-      res.writeHead(400, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: 'Invalid user ID format' }))
-      return
-    }
+      if (!validate(userId)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Invalid user ID format' }))
+        return
+      }
 
-    const user = users.find(({ id }) => id === userId)
-    if (user) {
-      res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify(user))
-    } else {
-      res.writeHead(404, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: 'The user with this ID does not exist' }))
+      const user = users.find(({ id }) => id === userId)
+      if (user) {
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify(user))
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' })
+        res.end(
+          JSON.stringify({ error: 'The user with this ID does not exist' }),
+        )
+      }
+    } catch (_) {
+      return500(res)
     }
   }
 
   async createUser(req: reqProp, res: resProp) {
-    let body = ''
-    req.on('data', (chunk) => {
-      body += chunk.toString()
-    })
-    req.on('end', () => {
-      const newUserData = JSON.parse(body)
-      if (isCorrectNewUserData(newUserData)) {
-        const newUser: User = {
-          id: uuidv4(),
-          ...newUserData,
-        }
-        users.push(newUser)
-
-        res.writeHead(201, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify(newUser))
-      } else {
-        res.writeHead(400, { 'Content-Type': 'application/json' })
-        res.end(
-          JSON.stringify({
-            error:
-              'Incorrect user information. Username, age and hobbies are required fields',
-          }),
-        )
-      }
-    })
-  }
-
-  async updateUser(req: reqProp, res: resProp) {
-    const userId = req.url?.split('/')[3] as string
-
-    if (!validate(userId)) {
-      res.writeHead(400, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: 'Invalid user ID format' }))
-      return
-    }
-
-    const userIndex = users.findIndex(({ id }) => id === userId)
-    if (userIndex !== -1) {
+    try {
       let body = ''
       req.on('data', (chunk) => {
         body += chunk.toString()
       })
       req.on('end', () => {
-        const newUserData = JSON.parse(body)
-        if (isCorrectNewUserData(newUserData)) {
-          const updatedUser = {
-            id: users[userIndex].id,
-            ...newUserData,
+        try {
+          const newUserData = JSON.parse(body)
+          if (isCorrectNewUserData(newUserData)) {
+            const newUser: User = {
+              id: uuidv4(),
+              ...newUserData,
+            }
+            users.push(newUser)
+
+            res.writeHead(201, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify(newUser))
+          } else {
+            res.writeHead(400, { 'Content-Type': 'application/json' })
+            res.end(
+              JSON.stringify({
+                error:
+                  'Incorrect user information. Username, age and hobbies are required fields',
+              }),
+            )
           }
-          users[userIndex] = updatedUser
-          res.writeHead(200, { 'Content-Type': 'application/json' })
-          res.end(JSON.stringify(updatedUser))
-        } else {
-          res.writeHead(400, { 'Content-Type': 'application/json' })
-          res.end(
-            JSON.stringify({
-              error:
-                'Incorrect user information. Username, age and hobbies are required fields',
-            }),
-          )
+        } catch (_) {
+          return500(res)
         }
       })
-    } else {
-      res.writeHead(404, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: 'The user with this ID does not exist' }))
+    } catch (_) {
+      return500(res)
+    }
+  }
+
+  async updateUser(req: reqProp, res: resProp) {
+    try {
+      const userId = req.url?.split('/')[3] as string
+
+      if (!validate(userId)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Invalid user ID format' }))
+        return
+      }
+
+      const userIndex = users.findIndex(({ id }) => id === userId)
+      if (userIndex !== -1) {
+        let body = ''
+        req.on('data', (chunk) => {
+          body += chunk.toString()
+        })
+        req.on('end', () => {
+          try {
+            const newUserData = JSON.parse(body)
+            if (isCorrectNewUserData(newUserData)) {
+              const updatedUser = {
+                id: users[userIndex].id,
+                ...newUserData,
+              }
+              users[userIndex] = updatedUser
+              res.writeHead(200, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify(updatedUser))
+            } else {
+              res.writeHead(400, { 'Content-Type': 'application/json' })
+              res.end(
+                JSON.stringify({
+                  error:
+                    'Incorrect user information. Username, age and hobbies are required fields',
+                }),
+              )
+            }
+          } catch (_) {
+            return500(res)
+          }
+        })
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' })
+        res.end(
+          JSON.stringify({ error: 'The user with this ID does not exist' }),
+        )
+      }
+    } catch (_) {
+      return500(res)
     }
   }
 
   async deleteUser(req: reqProp, res: resProp) {
-    const userId = req.url?.split('/')[3] as string
+    try {
+      const userId = req.url?.split('/')[3] as string
 
-    if (!validate(userId)) {
-      res.writeHead(400, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: 'Invalid user ID format' }))
-      return
-    }
+      if (!validate(userId)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Invalid user ID format' }))
+        return
+      }
 
-    const userIndex = users.findIndex(({ id }) => id === userId)
-    if (userIndex !== -1) {
-      users.splice(userIndex, 1)
-      res.writeHead(204, { 'Content-Type': 'application/json' })
-      res.end()
-    } else {
-      res.writeHead(404, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ error: 'The user with this ID does not exist' }))
+      const userIndex = users.findIndex(({ id }) => id === userId)
+      if (userIndex !== -1) {
+        users.splice(userIndex, 1)
+        res.writeHead(204, { 'Content-Type': 'application/json' })
+        res.end()
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' })
+        res.end(
+          JSON.stringify({ error: 'The user with this ID does not exist' }),
+        )
+      }
+    } catch (_) {
+      return500(res)
     }
   }
 }
